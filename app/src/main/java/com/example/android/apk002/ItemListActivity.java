@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -145,9 +146,32 @@ public class ItemListActivity extends AppCompatActivity {
     }
     private void addNewItem(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        View v= getLayoutInflater().inflate(R.layout.dialog_layout,null);
+        final EditText title= (EditText)v.findViewById(R.id.ed21);
+        final EditText note = (EditText)v.findViewById(R.id.ed22);
+        final Button bt = (Button)v.findViewById(R.id.btt33);
+        builder.setView(v);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DummyContent.DummyItem item = new DummyContent.DummyItem(title.getText().toString(),"",note.getText().toString());
+                DummyContent.addItem(item);
+                RecyclerView recyclerView= (RecyclerView) findViewById(R.id.item_list);
+                recyclerView.getAdapter().notifyDataSetChanged();
+                recyclerView.invalidate();
+                dialog.cancel();
+            }
+        });
+        //builder.setTitle("Dodaj notatkę");
+
+
+       /* builder.setTitle("Wprowadź tekst");
+        final TextView txtView= new TextView(this);
         final EditText input= new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        txtView.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
         AlertDialog.Builder ok = builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
@@ -170,7 +194,7 @@ public class ItemListActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        builder.show();
+        builder.show();*/
     }
 
     @Override
